@@ -9,9 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -52,22 +51,5 @@ public class MensajeriaRestController {
         List<Mensaje> mensajes = mensajeriaService.listarMensajes(userEmail);
 
         return ResponseEntity.ok(mensajes);
-    }
-
-    /**
-     * Endpoint para suscribirse a nuevos mensajes (long polling).
-     *
-     * @return ResponseEntity con el mensaje más reciente cuando esté disponible.
-     */
-    @GetMapping("/adminuser/suscribir-mensajes")
-    public ResponseEntity<Mensaje> suscribirMensajes() {
-        try {
-            // Espera hasta que haya un nuevo mensaje disponible
-            Mensaje nuevoMensaje = mensajeriaService.waitForNewMessage();
-            return ResponseEntity.ok(nuevoMensaje);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).build(); // Manejo de error en caso de interrupción
-        }
     }
 }

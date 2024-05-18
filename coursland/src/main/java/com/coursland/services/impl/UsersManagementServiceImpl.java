@@ -1,11 +1,14 @@
 package com.coursland.services.impl;
 
 import com.coursland.dto.UserDTO;
+import com.coursland.persistence.entities.Mensaje;
 import com.coursland.persistence.entities.Rol;
 import com.coursland.persistence.entities.User;
+import com.coursland.persistence.repository.MensajeRepository;
 import com.coursland.persistence.repository.UserRepository;
 import com.coursland.security.JWTUtils;
 import com.coursland.services.interfaces.UserManagementServiceI;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +32,8 @@ public class UsersManagementServiceImpl implements UserManagementServiceI {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private MensajeRepository mensajeRepository;
 
     /**
      * Método para registrar un nuevo usuario.
@@ -156,7 +161,12 @@ public class UsersManagementServiceImpl implements UserManagementServiceI {
         try {
             Optional<User> userOptional = userRepository.findById(id);
             if (userOptional.isPresent()) {
-                userRepository.delete(userOptional.get());
+                User user = userOptional.get();
+                List<Mensaje> mensajes = mensajeRepository.findByRemitenteOrDestinatarioOrderByFecha(user, user);
+                for (Mensaje mensaje : mensajes) {
+                    mensajeRepository.delete(mensaje);
+                }
+                userRepository.delete(user);
                 reqRes.setStatusCode(200);
                 reqRes.setMessage("Usuario eliminado exitosamente");
             } else {

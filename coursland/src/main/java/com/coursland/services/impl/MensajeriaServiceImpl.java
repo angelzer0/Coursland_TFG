@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Implementación de la interfaz MensajeriaServiceI que gestiona el envío y la recuperación de mensajes.
@@ -24,9 +22,6 @@ public class MensajeriaServiceImpl implements MensajeriaServiceI {
 
     @Autowired
     private UserRepository userRepository;
-
-    // Cola de mensajes pendientes para long polling
-    private BlockingQueue<Mensaje> pendingMessages = new LinkedBlockingQueue<>();
 
     /**
      * Envía un mensaje a un destinatario específico.
@@ -49,8 +44,6 @@ public class MensajeriaServiceImpl implements MensajeriaServiceI {
         mensaje.setContenido(mensajeDTO.getContenido());
 
         mensajeRepository.save(mensaje);
-        // Agrega el mensaje a la cola de mensajes pendientes para long polling
-        pendingMessages.offer(mensaje);
     }
 
     /**
@@ -66,15 +59,5 @@ public class MensajeriaServiceImpl implements MensajeriaServiceI {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         return mensajeRepository.findByRemitenteOrDestinatarioOrderByFecha(usuario, usuario);
-    }
-
-    /**
-     * Espera hasta que haya mensajes nuevos para el usuario.
-     *
-     * @return El mensaje más reciente para el usuario, o null si no hay mensajes nuevos.
-     */
-    public Mensaje waitForNewMessage() throws InterruptedException {
-        // Espera hasta que haya un mensaje en la cola de mensajes pendientes
-        return pendingMessages.take();
     }
 }

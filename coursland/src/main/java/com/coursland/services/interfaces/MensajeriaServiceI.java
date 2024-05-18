@@ -10,6 +10,4 @@ public interface MensajeriaServiceI {
     void enviarMensaje(MensajeDTO mensajeDTO, String remitenteEmail);
     List<Mensaje> listarMensajes(String userEmail);
 
-    Mensaje waitForNewMessage()throws InterruptedException;
-
 }

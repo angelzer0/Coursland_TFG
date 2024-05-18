@@ -32,8 +32,8 @@ const ChatRoom = () => {
     };
 
     return (
-        <div style={{ padding: '20px', borderRadius: '8px', maxWidth: '800px', margin: '0 auto' }}>
-            <h2 style={{ marginBottom: '20px', textAlign: 'center', color: 'white', textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)' }}>Chat Room</h2>
+        <div style={{ padding: '20px',  borderRadius: '8px', maxWidth: '800px', margin: '0 auto' }}>
+            <h2 style={{ marginBottom: '20px', textAlign: 'center' ,color: 'white',  textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)'}}>Chat Room</h2>
 
             {loading ? (
                 <div className="text-center">
@@ -44,7 +44,7 @@ const ChatRoom = () => {
                     <h3>No hay usuarios registrados actualmente</h3>
                 </div>
             ) : (
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}> 
                     <thead>
                         <tr>
                             <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff', borderRadius: '8px 0 0 0' }}>Nombre</th>
@@ -55,9 +55,9 @@ const ChatRoom = () => {
                     <tbody>
                         {users.map(user => (
                             <tr key={user.idUsuario}>
-                                <td style={{ backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>{user.nombre}</td>
-                                <td style={{ backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>{user.email}</td>
-                                <td style={{ backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>
+                                <td style={{backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd'}}>{user.nombre}</td>
+                                <td style={{backgroundColor: '#f2f2f2',padding: '10px', border: '1px solid #ddd' }}>{user.email}</td>
+                                <td style={{backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>
                                     <Link to={`/chat/${user.idUsuario}`} className="btn btn-primary">Enviar Mensaje</Link>
                                 </td>
                             </tr>

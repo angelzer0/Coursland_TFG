@@ -22,8 +22,7 @@ import java.util.List;
 public class DropboxFileUploaderServiceImpl implements DropboxFileUploaderServiceI {
 
 
-    String aTok = System.getenv("DROPBOX_TOKEN");
-    /**
+    String aTok = System.getenv("DROPBOX_TOKEN");    /**
      * Carga archivos en Dropbox y devuelve las URLs compartidas de los archivos cargados.
      *
      * @param files Lista de archivos a cargar.

@@ -16,6 +16,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@itseasy21/react-elastic-carousel": "^0.12.3",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "embla-carousel-react": "^8.0.2",
@@ -23,9 +24,12 @@
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-multi-carousel": "^2.8.5",
     "react-router-dom": "^6.22.3",
+    "react-slick": "^0.30.2",
     "sockjs-client": "^1.6.1",
-    "stompjs": "^2.3.3"
+    "stompjs": "^2.3.3",
+    "swiper": "^11.1.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

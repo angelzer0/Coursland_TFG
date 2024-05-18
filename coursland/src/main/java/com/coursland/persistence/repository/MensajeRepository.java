@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface MensajeRepository  extends JpaRepository<Mensaje, Long> {
     List<Mensaje> findByRemitenteOrDestinatarioOrderByFecha(User usuario, User usuario1);
+    void deleteByRemitenteOrDestinatario(User usuario, User usuario1);
 }

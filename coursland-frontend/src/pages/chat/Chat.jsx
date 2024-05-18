@@ -14,12 +14,6 @@ const Chat = () => {
         loadMessages();
         getCurrentUser();
         getDestinatarioNombre();
-        subscribeToMessages(); // Suscribirse a nuevos mensajes
-
-        return () => {
-            // Limpiar la suscripción al desmontar el componente
-            unsubscribeFromMessages();
-        };
     }, []);
 
     const loadMessages = async () => {
@@ -53,39 +47,18 @@ const Chat = () => {
     };
 
     const isCurrentUser = (message) => {
-        return message.remitente.idUsuario === currentUser?.idUsuario;
+        return message.remitente.idUsuario === currentUser.idUsuario;
     };
 
     const handleSendMessage = async () => {
         try {
             const token = localStorage.getItem('token');
             await ChatService.enviarMensaje({ idDestinatario: userId, contenido: newMessage }, token);
-            setNewMessage(''); // Limpieza del campo de escritura
-            loadMessages(); // Recarga de mensajes
+            setNewMessage(''); //Liempieza de campo de escritura
+            loadMessages(); //Recarga de mensajes
         } catch (error) {
             console.error('Error sending message:', error);
         }
-    };
-
-    const subscribeToMessages = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await ChatService.suscribirMensajes(token);
-            // Manejar los nuevos mensajes
-            handleNewMessage(response);
-        } catch (error) {
-            console.error('Error subscribing to messages:', error);
-        }
-    };
-
-    const unsubscribeFromMessages = () => {
-        // Realizar la limpieza de la suscripción
-        // (si es necesario para tu implementación específica)
-    };
-
-    const handleNewMessage = (message) => {
-        // Actualizar el estado con el nuevo mensaje
-        setMessages((prevMessages) => [...prevMessages, message]);
     };
 
     return (
