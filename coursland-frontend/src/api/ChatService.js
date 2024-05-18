@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const ChatService = {
-    BASE_URL: 'http://localhost:8080',
+    
+ BASE_URL: 'https://courslandtfg-production-712a.up.railway.app',
 
     async enviarMensaje(mensajeDTO, token) {
         try {
