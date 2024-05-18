@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const ChatService = {
     
- BASE_URL: 'https://courslandtfg-production-712a.up.railway.app',
+    BASE_URL: 'https://courslandtfg-production.up.railway.app',
 
     async enviarMensaje(mensajeDTO, token) {
         try {
