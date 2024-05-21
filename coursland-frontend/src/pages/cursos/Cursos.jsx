@@ -88,6 +88,7 @@ const Cursos = () => {
                     ))}
                   </p>
                   <p className="card-text" style={{ color: 'white' }}>Categoría: {curso.categoria}</p>
+                  <p className="card-text" style={{ color: 'white' }}>Hecho por: {curso.creador.email}</p>
                   <Link to={`/recursos/${curso.idCurso}`} className="btn btn-primary" style={{ backgroundColor: '#da773e', border: 'none' }}>Ver recursos</Link>
                 </div>
                 

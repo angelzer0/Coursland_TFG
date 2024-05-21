@@ -67,7 +67,7 @@ public class CursoServiceImpl implements CursoServiceI {
                 // Subir los archivos adjuntos y obtener las URLs
                 List<String> urlsArchivosAdjuntos = fileUploaderService.uploadFiles(cursoDTO.getArchivosAdjuntos());
                 nuevoCurso.setArchivosAdjuntos(urlsArchivosAdjuntos);
-            } catch (IOException | DbxException e) {
+            } catch (IOException e) {
                 System.out.println("Error al procesar archivos adjuntos: " + e.getMessage());
                 throw new IllegalStateException("Error al procesar archivos adjuntos: " + e.getMessage());
             }

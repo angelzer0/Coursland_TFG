@@ -1,5 +1,6 @@
 package com.coursland.dto;
 
+import com.coursland.persistence.entities.User;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -37,12 +37,16 @@ const Header = () => {
                   <li className="nav-item">
                     <Link className="nav-link" to="/">Inicio</Link>
                   </li>
+                  {!isAdmin && ( 
                   <li className="nav-item">
                     <Link className="nav-link" to="/crearcurso">Añadir Curso</Link>
                   </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/chatroom">Chatroom</Link>
-                  </li>
+                  )}
+                  {!isAdmin && ( 
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/chatroom">Chatroom</Link>
+                    </li>
+                  )}
                   <li className="nav-item">
                     <Link className="nav-link" to="/cursos">Cursos</Link>
                   </li>

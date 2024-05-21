@@ -7,6 +7,7 @@ import UserService from '../../api/UserService';
 const PerfilPage = () => {
     const [profileInfo, setProfileInfo] = useState({});
     const [numCursosCreados, setNumCursosCreados] = useState(0);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         const fetchProfileInfo = async () => {
@@ -14,6 +15,7 @@ const PerfilPage = () => {
                 const token = localStorage.getItem('token');
                 const response = await UserService.getYourProfile(token);
                 setProfileInfo(response.user);
+                setIsAdmin(UserService.isAdmin()); 
                 countUserCourses(response.user.idUsuario); 
             } catch (error) {
                 console.error('Error fetching profile information:', error);
@@ -42,7 +44,11 @@ const PerfilPage = () => {
                 <h1 className="display-2">{profileInfo.nombre}</h1>
                 <p className="lead">{profileInfo.email}</p>
                 <hr className="my-4" />
-                <p className="lead">HAS CREADO {numCursosCreados} {numCursosCreados !== 1 ? 'CURSOS' : 'CURSO'}</p>
+                {isAdmin ? (
+                    <p className="lead">ADMINISTRADOR DEL SISTEMA</p>
+                ) : (
+                    <p className="lead">HAS CREADO {numCursosCreados} {numCursosCreados !== 1 ? 'CURSOS' : 'CURSO'}</p>
+                )}
             </div>
         </div>
     );

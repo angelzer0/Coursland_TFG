@@ -64,9 +64,13 @@ const CrearCursoForm = () => {
       return;
     }
 
-    //Validacion enlaces vacios
     if (curso.enlaces.some(enlace => enlace.trim() === '')) {
       setError('Los enlaces no pueden estar vacíos');
+      return;
+    }
+
+    if (archivosAdjuntos.length === 0) {
+      setError('Debes adjuntar al menos un archivo.');
       return;
     }
     

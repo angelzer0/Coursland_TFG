@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface DropboxFileUploaderServiceI {
 
-    List<String> uploadFiles(List<MultipartFile> files) throws DbxException,IOException;
+    List<String> uploadFiles(List<MultipartFile> files) throws IOException ;
 }
