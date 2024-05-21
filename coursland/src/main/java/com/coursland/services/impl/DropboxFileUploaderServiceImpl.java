@@ -29,7 +29,6 @@ public class DropboxFileUploaderServiceImpl implements DropboxFileUploaderServic
     private static final String REFRESH_TOKEN = System.getenv("DROPBOX_TOKEN");
 
     private static final String REFRESH_URL = "https://api.dropbox.com/oauth2/token";
-
     private DbxClientV2 client;
 
     public DropboxFileUploaderServiceImpl() {

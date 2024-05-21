@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import CursoService from '../../api/CursoService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -43,15 +43,14 @@ const Recursos = () => {
           </ul>
           <h4 style={{ color: 'white' }}>Archivos Adjuntos:</h4>
           <ul>
-          {curso.archivosAdjuntos && curso.archivosAdjuntos.map((archivo, index) => (
-  <li key={index}>
-    <a href={archivo} download={archivo} style={{ textDecoration: 'none', color: 'white' }}>
-      <FontAwesomeIcon icon={regularFile} style={{ marginRight: '5px', color: 'white' }} /> 
-      {archivo.substring(0, archivo.indexOf('?')).substring(archivo.substring(0, archivo.indexOf('?')).lastIndexOf('/') + 1)} {/* Obtener el nombre del archivo sin la ruta */}
-    </a>
-  </li>
-))}
-
+            {curso.archivosAdjuntos && curso.archivosAdjuntos.map((archivo, index) => (
+              <li key={index}>
+                <a href={archivo} target="_blank" rel="noopener noreferrer" download={archivo} style={{ textDecoration: 'none', color: 'white' }}>
+                  <FontAwesomeIcon icon={regularFile} style={{ marginRight: '5px', color: 'white' }} /> 
+                  {archivo.substring(0, archivo.indexOf('?')).substring(archivo.substring(0, archivo.indexOf('?')).lastIndexOf('/') + 1)} {/* Obtener el nombre del archivo sin la ruta */}
+                </a>
+              </li>
+            ))}
           </ul><br />
         </div>
       ) : (
