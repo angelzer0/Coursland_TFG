@@ -34,10 +34,10 @@ public class CursoRestController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
 
-        log.info("Listar cursos solicitada por el usuario: {}", userEmail); // Log request for listing courses by the user
+        log.info("Listar cursos solicitada por el usuario: {}", userEmail);
 
         List<Curso> cursos = cursoService.listarCursos();
-        log.debug("Cursos listados: {}", cursos); // Log retrieved courses (debug level)
+        log.debug("Cursos listados: {}", cursos);
 
         return ResponseEntity.ok(cursos);
     }
@@ -72,7 +72,7 @@ public class CursoRestController {
         String userEmail = authentication.getName();
 
         Curso cursoGuardado = cursoService.createCurso(cursoDTO, userEmail);
-        log.info("Curso creado con éxito: {}", cursoGuardado); // Log successful course creation
+        log.info("Curso creado con éxito: {}", cursoGuardado);
         return ResponseEntity.ok(cursoGuardado);
     }
 

@@ -8,7 +8,6 @@ import com.coursland.persistence.repository.MensajeRepository;
 import com.coursland.persistence.repository.UserRepository;
 import com.coursland.security.JWTUtils;
 import com.coursland.services.interfaces.UserManagementServiceI;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
