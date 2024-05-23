@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const CursoService = {
   
-  BASE_URL: 'https://courslandtfg-production.up.railway.app',
+  BASE_URL: 'http://localhost:8080',
   
   async listarCursos(token) {
     try {

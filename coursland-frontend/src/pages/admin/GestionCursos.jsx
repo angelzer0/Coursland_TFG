@@ -5,6 +5,8 @@ const GestionCursos = () => {
     const [cursos, setCursos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [cursoAEliminar, setCursoAEliminar] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchBy, setSearchBy] = useState('titulo'); // Por defecto buscará por título
 
     useEffect(() => {
         async function fetchCursos() {
@@ -41,9 +43,39 @@ const GestionCursos = () => {
         setCursoAEliminar(null);
     };
 
+    const filteredCursos = cursos.filter(curso => {
+        if (searchBy === 'titulo') {
+            return curso.titulo.toLowerCase().includes(searchTerm.toLowerCase());
+        } else if (searchBy === 'creador') {
+            return curso.creador.email.toLowerCase().includes(searchTerm.toLowerCase());
+        }
+    });
+
     return (
         <div style={{ padding: '20px', borderRadius: '8px', maxWidth: '800px', margin: '0 auto' }}>
-            <h2 style={{ marginBottom: '20px', textAlign: 'center' ,color: 'white',  textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)'}}>Lista de Cursos</h2>
+            <h2 style={{ marginBottom: '20px', textAlign: 'center', color: 'white', textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)' }}>Lista de Cursos</h2>
+
+            <div className="row mb-3">
+                <div className="col-md-6">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        placeholder={`Buscar por ${searchBy === 'titulo' ? 'título del curso' : 'correo del creador'}`} 
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+                <div className="col-md-6">
+                    <select 
+                        className="form-select"
+                        value={searchBy}
+                        onChange={(e) => setSearchBy(e.target.value)}
+                    >
+                        <option value="titulo">Título del curso</option>
+                        <option value="creador">Correo del creador</option>
+                    </select>
+                </div>
+            </div>
 
             <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
@@ -63,12 +95,11 @@ const GestionCursos = () => {
                 </div>
             </div>
 
-            {/* Tabla de cursos */}
             {loading ? (
                 <div className="text-center">
                     <h3>Cargando...</h3>
                 </div>
-            ) : cursos.length === 0 ? (
+            ) : filteredCursos.length === 0 ? (
                 <div className="text-center">
                     <h3>No hay cursos disponibles actualmente.</h3>
                 </div>
@@ -78,16 +109,16 @@ const GestionCursos = () => {
                         <tr>
                             <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff', borderRadius: '8px 0 0 0' }}>Titulo</th>
                             <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff' }}>Descripción</th>
-                            <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff' }}>Categoría</th>
+                            <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff' }}>Creador</th>
                             <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff', borderRadius: '0 8px 0 0' }}>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {cursos.map(curso => (
+                        {filteredCursos.map(curso => (
                             <tr key={curso.idCurso}>
                                 <td style={{ padding: '10px', backgroundColor: '#f2f2f2', border: '1px solid #ddd' }}>{curso.titulo}</td>
                                 <td style={{ padding: '10px', backgroundColor: '#f2f2f2', border: '1px solid #ddd' }}>{curso.descripcion}</td>
-                                <td style={{ padding: '10px', backgroundColor: '#f2f2f2', border: '1px solid #ddd' }}>{curso.categoria}</td>
+                                <td style={{ padding: '10px', backgroundColor: '#f2f2f2', border: '1px solid #ddd' }}>{curso.creador.email}</td>
                                 <td style={{ padding: '10px', backgroundColor: '#f2f2f2', border: '1px solid #ddd' }}>
                                     <button className="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => setCursoAEliminar(curso.idCurso)}>Eliminar</button>
                                 </td>

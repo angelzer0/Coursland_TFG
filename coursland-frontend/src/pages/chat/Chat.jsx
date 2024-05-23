@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import ChatService from '../../api/ChatService';
 import UserService from '../../api/UserService';
@@ -10,33 +10,7 @@ const Chat = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [destinatarioNombre, setDestinatarioNombre] = useState('');
 
-    useEffect(() => {
-        loadMessages();
-        getCurrentUser();
-        getDestinatarioNombre();
-    }, []);
-
-    const loadMessages = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await ChatService.listarMensajes(token);
-            setMessages(response);
-        } catch (error) {
-            console.error('Error fetching messages:', error);
-        }
-    };
-
-    const getCurrentUser = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const profileResponse = await UserService.getYourProfile(token);
-            setCurrentUser(profileResponse.user);
-        } catch (error) {
-            console.error('Error fetching current user profile:', error);
-        }
-    };
-
-    const getDestinatarioNombre = async () => {
+    const getDestinatarioNombre = useCallback(async () => {
         try {
             const token = localStorage.getItem('token');
             const userResponse = await UserService.getUserById(userId, token);
@@ -44,7 +18,33 @@ const Chat = () => {
         } catch (error) {
             console.error('Error fetching destinatario name:', error);
         }
-    };
+    }, [userId]);
+
+    const loadMessages = useCallback(async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await ChatService.listarMensajes(token);
+            setMessages(response);
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+        }
+    }, []);
+
+    useEffect(() => {
+        const getCurrentUser = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const profileResponse = await UserService.getYourProfile(token);
+                setCurrentUser(profileResponse.user);
+            } catch (error) {
+                console.error('Error fetching current user profile:', error);
+            }
+        };
+
+        loadMessages();
+        getCurrentUser();
+        getDestinatarioNombre();
+    }, [userId, getDestinatarioNombre, loadMessages]);
 
     const isCurrentUser = (message) => {
         return message.remitente.idUsuario === currentUser.idUsuario;
@@ -54,16 +54,16 @@ const Chat = () => {
         try {
             const token = localStorage.getItem('token');
             await ChatService.enviarMensaje({ idDestinatario: userId, contenido: newMessage }, token);
-            setNewMessage(''); //Liempieza de campo de escritura
-            loadMessages(); //Recarga de mensajes
+            setNewMessage(''); // Limpiar campo de escritura
+            loadMessages(); // Recargar mensajes
         } catch (error) {
             console.error('Error sending message:', error);
         }
     };
 
     return (
-        <div style={{ padding: '20px',  borderRadius: '8px', maxWidth: '800px', margin: '0 auto' }}>
-            <h2 style={{ marginBottom: '20px', textAlign: 'center' ,color: 'white',  textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)'}}>Chat con {destinatarioNombre}</h2>
+        <div style={{ padding: '20px', borderRadius: '8px', maxWidth: '800px', margin: '0 auto' }}>
+            <h2 style={{ marginBottom: '20px', textAlign: 'center', color: 'white', textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)' }}>Chat con {destinatarioNombre}</h2>
             <div className="bg-dark" style={{ padding: '20px', borderRadius: '8px', maxWidth: '600px', margin: 'auto' }}>
                 <div className="chat-container" style={{ maxHeight: '400px', overflowY: 'auto', marginBottom: '20px' }}>
                     {messages.map((message, index) => (
