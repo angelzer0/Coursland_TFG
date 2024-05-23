@@ -82,7 +82,7 @@ public class CursoRestController {
      * @param cursoId ID del curso a eliminar.
      * @return ResponseEntity con un mensaje indicando el resultado de la operación.
      */
-    @DeleteMapping("/admin/eliminarcurso/{cursoId}")
+    @DeleteMapping("/adminuser/eliminarcurso/{cursoId}")
     public ResponseEntity<String> deleteCurso(@PathVariable Long cursoId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
@@ -95,6 +95,24 @@ public class CursoRestController {
         }
 
         return ResponseEntity.ok("Curso con ID " + cursoId + " eliminado correctamente.");
+    }
+
+    /**
+     * Obtiene la lista de cursos de un usuario específico.
+     *
+     * @return ResponseEntity con la lista de cursos del usuario.
+     */
+    @GetMapping("/adminuser/listarcursosusuario")
+    public ResponseEntity<List<Curso>> listarCursosPorUsuario() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+        log.info("Listar cursos por usuario solicitada por el usuario: {}", userEmail);
+
+        List<Curso> cursos = cursoService.listarCursosPorUsuario(userEmail);
+        log.debug("Cursos listados para el usuario {}: {}", userEmail, cursos);
+
+        return ResponseEntity.ok(cursos);
     }
 }
 

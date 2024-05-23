@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 const ChatRoom = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         async function fetchUsers() {
@@ -31,20 +32,36 @@ const ChatRoom = () => {
         );
     };
 
+    const filteredUsers = users.filter(user => 
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
-        <div style={{ padding: '20px',  borderRadius: '8px', maxWidth: '800px', margin: '0 auto' }}>
-            <h2 style={{ marginBottom: '20px', textAlign: 'center' ,color: 'white',  textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)'}}>Chat Room</h2>
+        <div style={{ padding: '20px', borderRadius: '8px', maxWidth: '800px', margin: '0 auto' }}>
+            <h2 style={{ marginBottom: '20px', textAlign: 'center', color: 'white', textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)' }}>Chat Room</h2>
+
+            <div className="row mb-3">
+                <div className="col-md-4">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        placeholder="Buscar por correo" 
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+            </div>
 
             {loading ? (
                 <div className="text-center">
                     <h3>Cargando...</h3>
                 </div>
-            ) : users.length === 0 ? (
+            ) : filteredUsers.length === 0 ? (
                 <div className="text-center">
                     <h3>No hay usuarios registrados actualmente</h3>
                 </div>
             ) : (
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}> 
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                         <tr>
                             <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff', borderRadius: '8px 0 0 0' }}>Nombre</th>
@@ -53,11 +70,11 @@ const ChatRoom = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map(user => (
+                        {filteredUsers.map(user => (
                             <tr key={user.idUsuario}>
-                                <td style={{backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd'}}>{user.nombre}</td>
-                                <td style={{backgroundColor: '#f2f2f2',padding: '10px', border: '1px solid #ddd' }}>{user.email}</td>
-                                <td style={{backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>
+                                <td style={{ backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>{user.nombre}</td>
+                                <td style={{ backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>{user.email}</td>
+                                <td style={{ backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>
                                     <Link to={`/chat/${user.idUsuario}`} className="btn btn-primary">Enviar Mensaje</Link>
                                 </td>
                             </tr>

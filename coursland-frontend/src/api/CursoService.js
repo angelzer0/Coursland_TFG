@@ -33,7 +33,7 @@ const CursoService = {
 
   async eliminarCurso(cursoId, token) {
     try {
-      const response = await axios.delete(`${CursoService.BASE_URL}/admin/eliminarcurso/${cursoId}`, {
+      const response = await axios.delete(`${CursoService.BASE_URL}/adminuser/eliminarcurso/${cursoId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -51,7 +51,19 @@ const CursoService = {
     } catch (error) {
       throw new Error(error.response.data);
     }
-  }
+  },
+  async listarCursosPorUsuario(token) {
+    try {
+      const response = await axios.get(`${CursoService.BASE_URL}/adminuser/listarcursosusuario`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data);
+    }
+  },
 }
 
 export default CursoService;

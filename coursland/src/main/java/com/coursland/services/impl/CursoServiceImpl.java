@@ -124,4 +124,22 @@ public class CursoServiceImpl implements CursoServiceI {
             throw new IllegalStateException("Usuario no encontrado para el correo electrónico: " + userEmail);
         }
     }
+
+    /**
+     * Lista los cursos creados por un usuario específico.
+     *
+     * @param userEmail Correo electrónico del usuario.
+     * @return Lista de cursos creados por el usuario.
+     * @throws IllegalStateException Si el usuario no se encuentra.
+     */
+    @Override
+    public List<Curso> listarCursosPorUsuario(String userEmail) {
+        Optional<User> userOptional = userRepository.findByEmail(userEmail);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return cursoRepository.findByCreador(user);
+        } else {
+            throw new IllegalStateException("Usuario no encontrado para el correo electrónico: " + userEmail);
+        }
+    }
 }

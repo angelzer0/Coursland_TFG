@@ -37,7 +37,7 @@ const Recursos = () => {
           <ul>
             {curso.enlaces.map((enlace, index) => (
               <li key={index}>
-                <a href={enlace} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'white' }}>{enlace}</a> {/* Hipervínculo sin subrayado y color blanco */}
+                <a href={enlace} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'white' }}>{enlace}</a>
               </li>
             ))}
           </ul>
@@ -47,7 +47,7 @@ const Recursos = () => {
               <li key={index}>
                 <a href={archivo} target="_blank" rel="noopener noreferrer" download={archivo} style={{ textDecoration: 'none', color: 'white' }}>
                   <FontAwesomeIcon icon={regularFile} style={{ marginRight: '5px', color: 'white' }} /> 
-                  {archivo.substring(0, archivo.indexOf('?')).substring(archivo.substring(0, archivo.indexOf('?')).lastIndexOf('/') + 1)} {/* Obtener el nombre del archivo sin la ruta */}
+                  {archivo.substring(0, archivo.indexOf('?')).substring(archivo.substring(0, archivo.indexOf('?')).lastIndexOf('/') + 1)} 
                 </a>
               </li>
             ))}

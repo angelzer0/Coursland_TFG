@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const ChatService = {
+ 
   BASE_URL: 'https://courslandtfg-production.up.railway.app',
   
     async enviarMensaje(mensajeDTO, token) {
@@ -30,6 +31,6 @@ const ChatService = {
       }
     };
     
-    // Nuevo método para suscribirse a nuevos mensajes mediante long polling
+
 
 export default ChatService;

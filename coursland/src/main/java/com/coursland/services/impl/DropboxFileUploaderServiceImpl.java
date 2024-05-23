@@ -30,14 +30,9 @@ import java.util.UUID;
 @Service
 public class DropboxFileUploaderServiceImpl implements DropboxFileUploaderServiceI {
 
-    /** ClientID de Dropbox. */
     private static final String CLIENT_IDENTIFIER = System.getenv("CLIENT_ID");
-    /** AppKey de Dropbox. */
     private static final String CLIENT_SECRET = System.getenv("CLIENT_SECRET");
-    /** AccessToken de Dropbox. */
     private static final String REFRESH_TOKEN = System.getenv("DROPBOX_TOKEN");
-
-    /** URL para refrescar el token de Dropbox. */
     private static final String REFRESH_URL = "https://api.dropbox.com/oauth2/token";
     /** Cliente de Dropbox. */
     private DbxClientV2 client;

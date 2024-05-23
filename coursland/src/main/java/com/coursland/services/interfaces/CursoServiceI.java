@@ -14,4 +14,6 @@ public interface CursoServiceI {
     Curso deleteCursoById(Long cursoId, String userEmail);
 
     Curso obtenerCursoPorId(Long cursoId);
+
+    List<Curso> listarCursosPorUsuario(String userEmail);
 }
