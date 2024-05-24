@@ -46,19 +46,15 @@ public class MensajeriaServiceImpl implements MensajeriaServiceI {
         mensajeRepository.save(mensaje);
     }
 
-    /**
-     * Lista los mensajes del usuario especificado por su correo electrónico.
-     *
-     * @param userEmail El correo electrónico del usuario.
-     * @return Una lista de mensajes del usuario, ordenados por fecha.
-     * @throws RuntimeException si el usuario no se encuentra en la base de datos.
-     */
-    @Override
-    public List<Mensaje> listarMensajes(String userEmail) {
-        User usuario = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        return mensajeRepository.findByRemitenteOrDestinatarioOrderByFecha(usuario, usuario);
+    @Override
+    public List<Mensaje> listarMensajes(String remitenteEmail, Long destinatarioId) {
+        User remitente = userRepository.findByEmail(remitenteEmail)
+                .orElseThrow(() -> new RuntimeException("Remitente no encontrado"));
+        User destinatario = userRepository.findById(destinatarioId)
+                .orElseThrow(() -> new RuntimeException("Destinatario no encontrado"));
+
+        return mensajeRepository.findChatMessages(remitente, destinatario);
     }
 }
 

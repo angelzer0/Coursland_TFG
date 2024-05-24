@@ -42,10 +42,10 @@ public class MensajeriaRestController {
      * @return ResponseEntity con la lista de mensajes.
      */
     @GetMapping("/adminuser/listar-mensajes")
-    public ResponseEntity<List<Mensaje>> listarMensajes() {
+    public ResponseEntity<List<Mensaje>> listarMensajes(@RequestParam Long destinatarioId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
-        List<Mensaje> mensajes = mensajeriaService.listarMensajes(userEmail);
+        List<Mensaje> mensajes = mensajeriaService.listarMensajes(userEmail, destinatarioId);
 
         return ResponseEntity.ok(mensajes);
     }

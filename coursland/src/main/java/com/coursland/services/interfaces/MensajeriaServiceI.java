@@ -8,6 +8,6 @@ import java.util.List;
 public interface MensajeriaServiceI {
 
     void enviarMensaje(MensajeDTO mensajeDTO, String remitenteEmail);
-    List<Mensaje> listarMensajes(String userEmail);
+    List<Mensaje> listarMensajes(String userEmail, Long usuario);
 
 }

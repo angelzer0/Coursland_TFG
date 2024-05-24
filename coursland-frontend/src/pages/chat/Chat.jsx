@@ -10,25 +10,16 @@ const Chat = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [destinatarioNombre, setDestinatarioNombre] = useState('');
 
-    const getDestinatarioNombre = useCallback(async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const userResponse = await UserService.getUserById(userId, token);
-            setDestinatarioNombre(userResponse.user.nombre);
-        } catch (error) {
-            console.error('Error fetching destinatario name:', error);
-        }
-    }, [userId]);
-
     const loadMessages = useCallback(async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await ChatService.listarMensajes(token);
+            const response = await ChatService.listarMensajes(userId, token);
+            console.log('Fetched messages:', response); 
             setMessages(response);
         } catch (error) {
             console.error('Error fetching messages:', error);
         }
-    }, []);
+    }, [userId]);
 
     useEffect(() => {
         const getCurrentUser = async () => {
@@ -41,10 +32,28 @@ const Chat = () => {
             }
         };
 
-        loadMessages();
         getCurrentUser();
+    }, []);
+
+    useEffect(() => {
+        if (currentUser) {
+            loadMessages();
+        }
+    }, [currentUser, loadMessages]);
+
+    const getDestinatarioNombre = useCallback(async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const userResponse = await UserService.getUserById(userId, token);
+            setDestinatarioNombre(userResponse.user.nombre);
+        } catch (error) {
+            console.error('Error fetching destinatario name:', error);
+        }
+    }, [userId]);
+
+    useEffect(() => {
         getDestinatarioNombre();
-    }, [userId, getDestinatarioNombre, loadMessages]);
+    }, [userId, getDestinatarioNombre]);
 
     const isCurrentUser = (message) => {
         return message.remitente.idUsuario === currentUser.idUsuario;
@@ -54,8 +63,8 @@ const Chat = () => {
         try {
             const token = localStorage.getItem('token');
             await ChatService.enviarMensaje({ idDestinatario: userId, contenido: newMessage }, token);
-            setNewMessage(''); // Limpiar campo de escritura
-            loadMessages(); // Recargar mensajes
+            setNewMessage(''); 
+            loadMessages(); 
         } catch (error) {
             console.error('Error sending message:', error);
         }
