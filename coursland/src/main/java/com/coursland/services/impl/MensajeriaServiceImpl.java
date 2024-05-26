@@ -46,7 +46,14 @@ public class MensajeriaServiceImpl implements MensajeriaServiceI {
         mensajeRepository.save(mensaje);
     }
 
-
+    /**
+     * Lista los mensajes entre un remitente y un destinatario específicos.
+     *
+     * @param remitenteEmail  El correo electrónico del remitente de los mensajes.
+     * @param destinatarioId  El ID del destinatario de los mensajes.
+     * @return Lista de mensajes entre el remitente y el destinatario.
+     * @throws RuntimeException si el remitente o el destinatario no se encuentran en la base de datos.
+     */
     @Override
     public List<Mensaje> listarMensajes(String remitenteEmail, Long destinatarioId) {
         User remitente = userRepository.findByEmail(remitenteEmail)

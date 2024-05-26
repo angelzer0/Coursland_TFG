@@ -7,7 +7,6 @@ import com.coursland.persistence.repository.CursoRepository;
 import com.coursland.persistence.repository.UserRepository;
 import com.coursland.services.interfaces.CursoServiceI;
 import com.coursland.services.interfaces.DropboxFileUploaderServiceI;
-import com.dropbox.core.DbxException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

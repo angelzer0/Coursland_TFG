@@ -87,20 +87,6 @@ public class UserManagementRestController {
     }
 
     /**
-     * Actualiza un usuario existente.
-     *
-     * @param userId ID del usuario a actualizar.
-     * @param reqres Usuario con los nuevos datos.
-     * @return ResponseEntity con el DTO del usuario actualizado.
-     */
-    @PutMapping("/admin/update/{userId}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Integer userId, @RequestBody User reqres) {
-        log.info("El usuario con ID: {} ha sido actualizado", userId);
-        UserDTO response = usersManagementService.updateUser(userId, reqres);
-        return ResponseEntity.ok(response);
-    }
-
-    /**
      * Obtiene el perfil del usuario autenticado.
      *
      * @return ResponseEntity con el DTO que contiene la información del perfil del usuario autenticado.

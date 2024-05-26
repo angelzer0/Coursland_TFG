@@ -196,41 +196,6 @@ public class UsersManagementServiceImpl implements UserManagementServiceI {
         return reqRes;
     }
 
-
-    /**
-     * Método para actualizar un usuario.
-     */
-    public UserDTO updateUser(Integer userId, User updatedUser) {
-        UserDTO reqRes = new UserDTO();
-        try {
-            Optional<User> userOptional = userRepository.findById(Long.valueOf(userId));
-            if (userOptional.isPresent()) {
-                User existingUser = userOptional.get();
-                existingUser.setEmail(updatedUser.getEmail());
-                existingUser.setNombre(updatedUser.getNombre());
-                existingUser.setRoles(updatedUser.getRoles());
-
-                // Verificar si la contraseña está presente en la solicitud
-                if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-                    // Codificar la contraseña y actualizarla
-                    existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-                }
-
-                User savedUser = userRepository.save(existingUser);
-                reqRes.setUser(savedUser);
-                reqRes.setStatusCode(200);
-                reqRes.setMessage("Usuario actualizado exitosamente");
-            } else {
-                reqRes.setStatusCode(404);
-                reqRes.setMessage("Usuario no encontrado para actualización");
-            }
-        } catch (Exception e) {
-            reqRes.setStatusCode(500);
-            reqRes.setMessage("Se produjo un error al actualizar el usuario: " + e.getMessage());
-        }
-        return reqRes;
-    }
-
     /**
      * Método para obtener la información del usuario actual.
      */

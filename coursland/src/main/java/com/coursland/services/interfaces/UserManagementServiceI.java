@@ -17,7 +17,5 @@ public interface UserManagementServiceI {
 
     UserDTO getUsersById(Integer id);
 
-    UserDTO updateUser(Integer userId, User updatedUser);
-
     UserDTO getMyInfo(String email);
 }

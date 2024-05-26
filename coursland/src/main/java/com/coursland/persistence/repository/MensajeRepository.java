@@ -17,7 +17,6 @@ public interface MensajeRepository  extends JpaRepository<Mensaje, Long> {
     @Query("SELECT m FROM Mensaje m WHERE (m.remitente = :remitente AND m.destinatario = :destinatario) OR (m.remitente = :destinatario AND m.destinatario = :remitente) ORDER BY m.fecha")
     List<Mensaje> findChatMessages(@Param("remitente") User remitente, @Param("destinatario") User destinatario);
 
-
     List<Mensaje> findByRemitenteOrDestinatarioOrderByFecha(User user, User user1);
 
 }

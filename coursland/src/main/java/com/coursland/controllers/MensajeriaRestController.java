@@ -3,6 +3,8 @@ package com.coursland.controllers;
 import com.coursland.dto.MensajeDTO;
 import com.coursland.persistence.entities.Mensaje;
 import com.coursland.services.interfaces.MensajeriaServiceI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,8 @@ import java.util.List;
  */
 @RestController
 public class MensajeriaRestController {
+
+    private static final Logger log = LoggerFactory.getLogger(MensajeriaRestController.class);
 
     @Autowired
     private MensajeriaServiceI mensajeriaService;
@@ -33,6 +37,8 @@ public class MensajeriaRestController {
 
         mensajeriaService.enviarMensaje(mensajeDTO, userEmail);
 
+        log.info("Mensaje enviado con éxito por el usuario {}", userEmail);
+
         return ResponseEntity.ok("Mensaje enviado con éxito.");
     }
 
@@ -45,10 +51,10 @@ public class MensajeriaRestController {
     public ResponseEntity<List<Mensaje>> listarMensajes(@RequestParam Long destinatarioId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
+
         List<Mensaje> mensajes = mensajeriaService.listarMensajes(userEmail, destinatarioId);
 
         return ResponseEntity.ok(mensajes);
     }
-
-
 }
+
