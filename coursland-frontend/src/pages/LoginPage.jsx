@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import UserService from '../api/UserService';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage = () => {
     const navigate = useNavigate();
-    const location = useLocation();
 
     const [formData, setFormData] = useState({
         email: '',
@@ -14,12 +13,6 @@ const LoginPage = () => {
     });
 
     const [showPassword, setShowPassword] = useState(false);
-
-    useEffect(() => {
-        if (location.state && location.state.message) {
-            toast.success(location.state.message);
-        }
-    }, [location]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -49,7 +42,7 @@ const LoginPage = () => {
             if (userData.token) {
                 localStorage.setItem('token', userData.token);
                 localStorage.setItem('roles', JSON.stringify(userData.roles)); 
-                navigate('/cursos');
+                navigate('/cursos', { state: { message: 'Has iniciado sesión correctamente' } });
             } else {
                 toast.error(userData.message);
             }
