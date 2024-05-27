@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import UserService from '../api/UserService';
 import { useNavigate, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RegistrationPage = () => {
     const navigate = useNavigate();
@@ -12,12 +14,17 @@ const RegistrationPage = () => {
         password: ''
     });
 
-    const [errors, setErrors] = useState({}); 
+    const [errors, setErrors] = useState({});
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
         setErrors({ ...errors, [name]: '' });
+    };
+
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
     };
 
     const handleSubmit = async (e) => {
@@ -50,20 +57,20 @@ const RegistrationPage = () => {
                     email: '',
                     password: ''
                 });
-                alert('Usuario registrado exitosamente');
-                navigate('/login');
+                navigate('/login', { state: { message: 'Te has registrado correctamente' } });
             } else if (response.statusCode === 400) {
                 setErrors({ email: response.message });
             }
         } catch (error) {
             console.error('Error al registrar usuario:', error);
-            alert('Se produjo un error al registrar al usuario');
+            toast.error('Se produjo un error al registrar al usuario');
         }
     };
 
     return (
         <div className="container-fluid d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
-            <div className="auth-container bg-dark text-white border p-3" style={{ boxShadow: '3px 4px 6px rgba(255, 255, 255, 0.5)' ,borderRadius: '15px'}}>
+            <ToastContainer />
+            <div className="auth-container bg-dark text-white border p-3" style={{ boxShadow: '3px 4px 6px rgba(255, 255, 255, 0.5)', borderRadius: '15px' }}>
                 <h2 className="mb-3">Registro</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
@@ -78,12 +85,19 @@ const RegistrationPage = () => {
                     </div>
                     <div className="mb-3">
                         <label className="mb-1">Contraseña:</label>
-                        <input type="password" name="password" value={formData.password} onChange={handleInputChange} className="form-control" required />
+                        <div className="input-group">
+                            <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleInputChange} className="form-control" required />
+                            <button type="button" className="btn btn-outline-secondary" onClick={handleTogglePassword}>
+                                {showPassword ? 'Ocultar' : 'Mostrar'}
+                            </button>
+                        </div>
                         {errors.password && <div className="text-danger">{errors.password}</div>}
                     </div>
-                    <button type="submit" className="btn btn-primary mb-2" style={{ backgroundColor: '#da773e', border: 'none' }}>Registrar</button>
+                    <div className="d-flex justify-content-center">
+                        <button type="submit" className="btn btn-primary mb-2" style={{ backgroundColor: '#da773e', border: 'none', width: '100%' }}>Registrar</button>
+                    </div>
                 </form>
-                <p>¿Ya tienes una cuenta? <Link to="/login" style={{textDecoration: 'none', color: '#da773e'}}>Iniciar sesión</Link></p>
+                <p>¿Ya tienes una cuenta? <Link to="/login" style={{ textDecoration: 'none', color: '#da773e' }}>Iniciar sesión</Link></p>
             </div>
         </div>
     );

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import CursoService from '../../api/CursoService';
 import UserService from '../../api/UserService';
 import logo from '../../assets/courslandre.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Cursos = () => {
   const [cursos, setCursos] = useState([]);
@@ -13,6 +15,7 @@ const Cursos = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 4;
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,6 +34,12 @@ const Cursos = () => {
 
     fetchData();
   }, [navigate]); 
+
+  useEffect(() => {
+    if (location.state && location.state.message) {
+      toast.success(location.state.message);
+    }
+  }, [location]);
 
   const filteredCursos = cursos.filter(curso => {
     if (!searchTerm) {
@@ -52,6 +61,7 @@ const Cursos = () => {
 
   return (
     <div className="container">
+      <ToastContainer />
       <br />
       <h2 className="text-center mt-4 mb-4" style={{ color: 'white', textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)' }}>Cursos Disponibles</h2>
       <div className="row mb-3">

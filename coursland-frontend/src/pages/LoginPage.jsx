@@ -1,32 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UserService from '../api/UserService';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
 
-    const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
+    useEffect(() => {
+        if (location.state && location.state.message) {
+            toast.success(location.state.message);
+        }
+    }, [location]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!formData.email.trim()) {
-            setError('El correo electrónico es obligatorio');
+            toast.error('El correo electrónico es obligatorio');
             return;
         }
 
         if (!formData.password.trim()) {
-            setError('La contraseña es obligatoria');
+            toast.error('La contraseña es obligatoria');
             return;
         }
 
@@ -38,19 +51,19 @@ const LoginPage = () => {
                 localStorage.setItem('roles', JSON.stringify(userData.roles)); 
                 navigate('/cursos');
             } else {
-                setError(userData.message);
+                toast.error(userData.message);
             }
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
-            setError('Se produjo un error al iniciar sesión');
+            toast.error('Se produjo un error al iniciar sesión');
         }
     };
 
     return (
         <div className="container-fluid d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
+            <ToastContainer />
             <div className="auth-container bg-dark text-white border p-3" style={{ boxShadow: '3px 4px 6px rgba(255, 255, 255, 0.5)', borderRadius: '15px'}}>
                 <h2 className="mb-3">Login</h2>
-                {error && <p className="text-danger">{error}</p>}
                 <form className="auth-form" onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <label className="mb-1">Correo Electrónico:</label>
@@ -58,9 +71,16 @@ const LoginPage = () => {
                     </div>
                     <div className="mb-3">
                         <label className="mb-1">Contraseña:</label>
-                        <input type="password" name="password" value={formData.password} onChange={handleInputChange} className="form-control" required />
+                        <div className="input-group">
+                            <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleInputChange} className="form-control" required />
+                            <button type="button" className="btn btn-outline-secondary" onClick={handleTogglePassword}>
+                                {showPassword ? 'Ocultar' : 'Mostrar'}
+                            </button>
+                        </div>
                     </div>
-                    <button type="submit" className="btn btn-primary mb-2" style={{ backgroundColor: '#da773e', border: 'none' }}>Iniciar Sesión</button>
+                    <div className="d-flex justify-content-center">
+                        <button type="submit" className="btn btn-primary mb-2" style={{ backgroundColor: '#da773e', border: 'none', width: '100%' }}>Iniciar Sesión</button>
+                    </div>
                 </form>
                 <p>¿No tienes cuenta? <Link to="/registro" style={{textDecoration: 'none', color: '#da773e'}}>Regístrate</Link></p>
             </div>
