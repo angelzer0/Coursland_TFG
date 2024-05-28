@@ -1,18 +1,26 @@
-import { useState } from 'react';
-import UserService from '../api/UserService';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UserService from '../api/UserService';
 
 const LoginPage = () => {
     const navigate = useNavigate();
-
+    const location = useLocation();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
 
     const [showPassword, setShowPassword] = useState(false);
+
+    useEffect(() => {
+        if (location.state && location.state.message) {
+            toast.success(location.state.message);
+            // Clear the state after displaying the message to prevent re-displaying
+            navigate(location.pathname, { replace: true, state: {} });
+        }
+    }, [location, navigate]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;

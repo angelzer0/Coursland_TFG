@@ -33,6 +33,7 @@ public class DropboxFileUploaderServiceImpl implements DropboxFileUploaderServic
     private static final String CLIENT_IDENTIFIER = System.getenv("CLIENT_ID");
     private static final String CLIENT_SECRET = System.getenv("CLIENT_SECRET");
     private static final String REFRESH_TOKEN = System.getenv("DROPBOX_TOKEN");
+
     private static final String REFRESH_URL = "https://api.dropbox.com/oauth2/token";
     /** Cliente de Dropbox. */
     private DbxClientV2 client;

@@ -22,10 +22,10 @@ const Cursos = () => {
       try {
         if (!UserService.isAuthenticated()) {
           navigate('/login');
-          return; 
+          return;
         }
-        const token = localStorage.getItem('token'); 
-        const cursosData = await CursoService.listarCursos(token); 
+        const token = localStorage.getItem('token');
+        const cursosData = await CursoService.listarCursos(token);
         setCursos(cursosData);
       } catch (error) {
         console.error(error);
@@ -33,7 +33,7 @@ const Cursos = () => {
     };
 
     fetchData();
-  }, [navigate]); 
+  }, [navigate]);
 
   useEffect(() => {
     if (location.state && location.state.message) {
@@ -43,11 +43,11 @@ const Cursos = () => {
 
   const filteredCursos = cursos.filter(curso => {
     if (!searchTerm) {
-      return true; // Si no se escribe nada en el campo de búsqueda, muestra todos los cursos
+      return true;
     } else if (searchType === 'titulo') {
       return curso.titulo.toLowerCase().includes(searchTerm.toLowerCase());
     } else if (searchType === 'dificultad') {
-      return curso.dificultad.toString() === searchTerm; 
+      return curso.dificultad.toString() === searchTerm;
     } else if (searchType === 'categoria') {
       return curso.categoria.toLowerCase().includes(searchTerm.toLowerCase());
     }
@@ -63,8 +63,8 @@ const Cursos = () => {
     <div className="container">
       <ToastContainer />
       <br />
-      <h2 className="text-center mt-4 mb-4" style={{ color: 'white', textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)' }}>Cursos Disponibles</h2>
-      <div className="row mb-3">
+      <h2 className="text-center mt-3 mb-3" style={{ color: 'white', textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)', fontSize: '24px' }}>Cursos Disponibles</h2>
+      <div className="row mb-2">
         <div className="col-md-4">
           <input 
             type="text" 
@@ -72,6 +72,7 @@ const Cursos = () => {
             placeholder={searchType === 'dificultad' ? 'Buscar por Dificultad (1-5)' : 'Buscar...'}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ fontSize: '14px', padding: '5px' }}
           />
         </div>
         <div className="col-md-4">
@@ -79,6 +80,7 @@ const Cursos = () => {
             className="form-select" 
             value={searchType} 
             onChange={(e) => setSearchType(e.target.value)}
+            style={{ fontSize: '14px', padding: '5px' }}
           >
             <option value="titulo">Buscar por Título</option>
             <option value="dificultad">Buscar por Dificultad</option>
@@ -90,24 +92,24 @@ const Cursos = () => {
         {currentCursos.length === 0 ? (
           <div className="col-12 text-center">
             <br /><br />
-            <h3 style={{ color: 'white', textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)' }}>No hay cursos disponibles actualmente.</h3>
+            <h3 style={{ color: 'white', textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)', fontSize: '18px' }}>No hay cursos disponibles actualmente.</h3>
           </div>
         ) : (
           currentCursos.map(curso => (
             <div key={curso.idCurso} className="col-md-3">
-              <div className="card mb-4" style={{ marginBottom: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
+              <div className="card mb-3" style={{ border: '1px solid #ccc', borderRadius: '5px' }}>
                 <img src={logo} className="card-img-top" alt="Imagen del curso" style={{ width: '100%', borderTopLeftRadius: '5px', borderTopRightRadius: '5px' }} />
-                <div className="card-body bg-dark" style={{ padding: '20px', borderBottomLeftRadius: '5px', borderBottomRightRadius: '5px' }}>
-                  <h5 className="card-title" style={{ color: 'white', fontSize: '20px', marginBottom: '10px' }}>{curso.titulo}</h5>
-                  <p className="card-text" style={{ color: 'white' }}>
+                <div className="card-body bg-dark" style={{ padding: '15px', borderBottomLeftRadius: '5px', borderBottomRightRadius: '5px' }}>
+                  <h5 className="card-title" style={{ color: 'white', fontSize: '18px', marginBottom: '8px' }}>{curso.titulo}</h5>
+                  <p className="card-text" style={{ color: 'white', fontSize: '14px' }}>
                     Dificultad: {' '}
                     {[...Array(curso.dificultad)].map((_, index) => (
                       <FontAwesomeIcon icon={solidStar} key={index} style={{ color: '#f7ce3e' }} />
                     ))}
                   </p>
-                  <p className="card-text" style={{ color: 'white' }}>Categoría: {curso.categoria}</p>
-                  <p className="card-text" style={{ color: 'white' }}>Hecho por: {curso.creador.email}</p>
-                  <Link to={`/recursos/${curso.idCurso}`} className="btn btn-primary" style={{ backgroundColor: '#da773e', border: 'none' }}>Ver recursos</Link>
+                  <p className="card-text" style={{ color: 'white', fontSize: '14px' }}>Categoría: {curso.categoria}</p>
+                  <p className="card-text" style={{ color: 'white', fontSize: '14px' }}>Hecho por: {curso.creador.email}</p>
+                  <Link to={`/recursos/${curso.idCurso}`} className="btn btn-primary" style={{ backgroundColor: '#da773e', border: 'none', fontSize: '14px', padding: '5px 10px' }}>Ver recursos</Link>
                 </div>
               </div>
             </div>
@@ -115,10 +117,10 @@ const Cursos = () => {
         )}
       </div>
       {filteredCursos.length > 0 && (
-        <div className="d-flex justify-content-between mt-4">
+        <div className="d-flex justify-content-between">
           <button 
             className="btn btn-primary" 
-            style={{ backgroundColor: '#da773e', border: 'none' }}
+            style={{ backgroundColor: '#da773e', border: 'none', fontSize: '14px', padding: '5px 10px' }}
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
           >
@@ -126,7 +128,7 @@ const Cursos = () => {
           </button>
           <button 
             className="btn btn-primary" 
-            style={{ backgroundColor: '#da773e', border: 'none' }}
+            style={{ backgroundColor: '#da773e', border: 'none', fontSize: '14px', padding: '5px 10px' }}
             onClick={() => paginate(currentPage + 1)}
             disabled={indexOfLastCourse >= filteredCursos.length}
           >

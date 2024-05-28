@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import UserService from '../../api/UserService';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 const ChatRoom = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const usersPerPage = 6;
 
     useEffect(() => {
         async function fetchUsers() {
@@ -36,6 +40,12 @@ const ChatRoom = () => {
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     return (
         <div style={{ padding: '20px', borderRadius: '8px', maxWidth: '800px', margin: '0 auto' }}>
             <h2 style={{ marginBottom: '20px', textAlign: 'center', color: 'white', textShadow: '2px 2px 2px rgba(0, 0, 0, 1.0)' }}>Chat Room</h2>
@@ -61,26 +71,46 @@ const ChatRoom = () => {
                     <h3>No hay usuarios registrados actualmente</h3>
                 </div>
             ) : (
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                    <thead>
-                        <tr>
-                            <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff', borderRadius: '8px 0 0 0' }}>Nombre</th>
-                            <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff' }}>Email</th>
-                            <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff', borderRadius: '0 8px 0 0' }}>Chats</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredUsers.map(user => (
-                            <tr key={user.idUsuario}>
-                                <td style={{ backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>{user.nombre}</td>
-                                <td style={{ backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>{user.email}</td>
-                                <td style={{ backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>
-                                    <Link to={`/chat/${user.idUsuario}`} className="btn btn-primary">Enviar Mensaje</Link>
-                                </td>
+                <>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr>
+                                <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff', borderRadius: '8px 0 0 0' }}>Nombre</th>
+                                <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff' }}>Email</th>
+                                <th style={{ padding: '10px', backgroundColor: '#343a40', color: '#fff', borderRadius: '0 8px 0 0' }}>Chats</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {currentUsers.map(user => (
+                                <tr key={user.idUsuario}>
+                                    <td style={{ backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>{user.nombre}</td>
+                                    <td style={{ backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>{user.email}</td>
+                                    <td style={{ backgroundColor: '#f2f2f2', padding: '10px', border: '1px solid #ddd' }}>
+                                        <Link to={`/chat/${user.idUsuario}`} className="btn btn-primary" style={{ backgroundColor: '#da773e', border: 'none', fontSize: '14px', padding: '5px 10px' }}>Enviar Mensaje</Link>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <div className="d-flex justify-content-between mt-3">
+                        <button 
+                            className="btn btn-primary" 
+                            style={{ backgroundColor: '#da773e', border: 'none', fontSize: '14px', padding: '5px 10px' }}
+                            onClick={() => paginate(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        >
+                            <FontAwesomeIcon icon={faArrowLeft} />
+                        </button>
+                        <button 
+                            className="btn btn-primary" 
+                            style={{ backgroundColor: '#da773e', border: 'none', fontSize: '14px', padding: '5px 10px' }}
+                            onClick={() => paginate(currentPage + 1)}
+                            disabled={indexOfLastUser >= filteredUsers.length}
+                        >
+                            <FontAwesomeIcon icon={faArrowRight} />
+                        </button>
+                    </div>
+                </>
             )}
         </div>
     );
