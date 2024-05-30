@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import  { useState, useEffect, useCallback } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import ChatService from '../../api/ChatService';
 import UserService from '../../api/UserService';
 
 const Chat = () => {
     const { userId } = useParams();
+    const location = useLocation();
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
@@ -54,6 +55,31 @@ const Chat = () => {
     useEffect(() => {
         getDestinatarioNombre();
     }, [userId, getDestinatarioNombre]);
+
+    useEffect(() => {
+        let pollingTimeout;
+
+        const startPolling = () => {
+            pollingTimeout = setTimeout(async () => {
+                await loadMessages();
+                startPolling();
+            }, 5000); // Poll every 5 seconds
+        };
+
+        const checkAndStartPolling = () => {
+            if (location.pathname.startsWith('/chat/')) {
+                startPolling();
+            } else {
+                clearTimeout(pollingTimeout);
+            }
+        };
+
+        checkAndStartPolling();
+
+        return () => {
+            clearTimeout(pollingTimeout);
+        };
+    }, [location.pathname, loadMessages]);
 
     const isCurrentUser = (message) => {
         return message.remitente.idUsuario === currentUser.idUsuario;

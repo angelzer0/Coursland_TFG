@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const UserService = {
 
-    BASE_URL: 'https://courslandtfg-production.up.railway.app',    
+    BASE_URL: 'https://courslandtfg-production.up.railway.app',
+
     async login(email, password) {
         const response = await axios.post(`${UserService.BASE_URL}/auth/login`, { email, password });
         return response.data;
