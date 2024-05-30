@@ -78,6 +78,43 @@ public class CursoServiceImpl implements CursoServiceI {
         }
     }
 
+    @Override
+    public Curso updateCurso(Long cursoId, CursoDTO cursoDTO, String userEmail) throws IllegalStateException {
+        Optional<User> userOptional = userRepository.findByEmail(userEmail);
+        if (userOptional.isPresent()) {
+            User currentUser = userOptional.get();
+            Optional<Curso> cursoOptional = cursoRepository.findById(cursoId);
+            if (cursoOptional.isPresent()) {
+                Curso cursoExistente = cursoOptional.get();
+                if (!cursoExistente.getCreador().equals(currentUser)) {
+                    throw new IllegalStateException("No tienes permiso para actualizar este curso.");
+                }
+
+                cursoExistente.setTitulo(cursoDTO.getTitulo());
+                cursoExistente.setDescripcion(cursoDTO.getDescripcion());
+                cursoExistente.setDificultad(cursoDTO.getDificultad());
+                cursoExistente.setCategoria(cursoDTO.getCategoria());
+                cursoExistente.setEnlaces(cursoDTO.getEnlaces());
+
+                try {
+                    // Subir los nuevos archivos adjuntos y obtener las URLs
+                    List<String> urlsArchivosAdjuntos = fileUploaderService.uploadFiles(cursoDTO.getArchivosAdjuntos());
+                    cursoExistente.setArchivosAdjuntos(urlsArchivosAdjuntos);
+                } catch (IOException e) {
+                    System.out.println("Error al procesar archivos adjuntos: " + e.getMessage());
+                    throw new IllegalStateException("Error al procesar archivos adjuntos: " + e.getMessage());
+                }
+
+                // Guardar el curso actualizado en la base de datos
+                return cursoRepository.save(cursoExistente);
+            } else {
+                throw new IllegalArgumentException("No se encontró un curso con el ID: " + cursoId);
+            }
+        } else {
+            throw new IllegalStateException("Usuario no encontrado para el correo electrónico: " + userEmail);
+        }
+    }
+
     /**
      * Obtiene un curso por su ID.
      *

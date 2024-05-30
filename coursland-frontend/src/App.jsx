@@ -8,12 +8,15 @@ import Cursos from './pages/cursos/Cursos';
 import PerfilPage from './pages/users/PerfilPage';
 import AdminPanel from './pages/admin/AdminPanel';
 import CrearCursoForm from './pages/cursos/CrearCursoForm';
+import ActualizarCurso from './pages/cursos/ActualizarCurso';
 import GestionUsuarios from './pages/admin/GestionUsuarios';
 import GestionCursos from './pages/admin/GestionCursos';
 import Recursos from './pages/cursos/Recursos'; 
 import ChatRoom from './pages/chat/ChatRoom';
 import Chat from './pages/chat/Chat';
 import backgroundImage from './assets/background4.png';
+import MisCursos from './pages/cursos/MisCursos';
+import ActualizarPerfil from './pages/users/ActualizarPerfil';
 
 
 const App = () => {
@@ -34,6 +37,9 @@ const App = () => {
           <Route path="/recursos/:cursoId" element={<Recursos />} />
           <Route path="/chatroom" element={<ChatRoom />} />
           <Route path="/chat/:userId" element={<Chat />} />
+          <Route path="/miscursos" element={<MisCursos />} />
+          <Route path="/actualizarcurso/:cursoId" element={<ActualizarCurso />} />
+          <Route path="/actualizarperfil" element={<ActualizarPerfil />} />
           {/* Redirige a la página de Inicio para todas las rutas no definidas */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes> 

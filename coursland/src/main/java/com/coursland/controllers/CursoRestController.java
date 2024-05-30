@@ -43,6 +43,31 @@ public class CursoRestController {
     }
 
     /**
+     * Actualiza un curso existente.
+     *
+     * @param cursoId  ID del curso a actualizar.
+     * @param cursoDTO Datos del curso a actualizar.
+     * @return ResponseEntity con el curso actualizado.
+     */
+    @PutMapping("/adminuser/actualizarcurso/{cursoId}")
+    public ResponseEntity<Curso> updateCurso(@PathVariable Long cursoId, @ModelAttribute CursoDTO cursoDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+        try {
+            Curso cursoActualizado = cursoService.updateCurso(cursoId, cursoDTO, userEmail);
+            log.info("Curso con ID {} actualizado correctamente: {}", cursoId, cursoActualizado);
+            return ResponseEntity.ok(cursoActualizado);
+        } catch (IllegalStateException e) {
+            log.error("Error al actualizar el curso con ID {}: {}", cursoId, e.getMessage());
+            return ResponseEntity.status(403).body(null);
+        } catch (IllegalArgumentException e) {
+            log.warn("No se encontró un curso con ID {}: {}", cursoId, e.getMessage());
+            return ResponseEntity.status(404).body(null);
+        }
+    }
+
+    /**
      * Obtiene un curso por su ID.
      *
      * @param cursoId ID del curso a obtener.

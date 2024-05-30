@@ -16,8 +16,7 @@ const LoginPage = () => {
 
     useEffect(() => {
         if (location.state && location.state.message) {
-            toast.success(location.state.message);
-            // Clear the state after displaying the message to prevent re-displaying
+            toast.warn(location.state.message, { className: 'toast-warning' });
             navigate(location.pathname, { replace: true, state: {} });
         }
     }, [location, navigate]);
@@ -55,7 +54,6 @@ const LoginPage = () => {
                 toast.error(userData.message);
             }
         } catch (error) {
-            console.error('Error al iniciar sesión:', error);
             toast.error('Se produjo un error al iniciar sesión');
         }
     };

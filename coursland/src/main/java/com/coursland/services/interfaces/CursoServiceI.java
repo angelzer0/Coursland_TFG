@@ -16,4 +16,7 @@ public interface CursoServiceI {
     Curso obtenerCursoPorId(Long cursoId);
 
     List<Curso> listarCursosPorUsuario(String userEmail);
+
+    Curso updateCurso(Long cursoId, CursoDTO cursoDTO, String userEmail) throws IllegalStateException;
+
 }

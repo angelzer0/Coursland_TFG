@@ -3,7 +3,7 @@ import axios from 'axios';
 const CursoService = {
   
   BASE_URL: 'https://courslandtfg-production.up.railway.app',
-    
+
   async listarCursos(token) {
     try {
       const response = await axios.get(`${CursoService.BASE_URL}/adminuser/listarcursos`,{
@@ -64,6 +64,21 @@ const CursoService = {
       throw new Error(error.response.data);
     }
   },
+  
+  async actualizarCurso(cursoId, cursoDTO, token) {
+    try {
+      const response = await axios.put(`${CursoService.BASE_URL}/adminuser/actualizarcurso/${cursoId}`, cursoDTO, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data);
+    }
+  },
 }
+
 
 export default CursoService;

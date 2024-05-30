@@ -112,4 +112,17 @@ public class UserManagementRestController {
         UserDTO response = usersManagementService.deleteUserById(userId);
         return ResponseEntity.ok(response);
     }
+    /**
+     * Actualiza un usuario por su ID.
+     *
+     * @param userId ID del usuario a actualizar.
+     * @param userDTO DTO con la información actualizada del usuario.
+     * @return ResponseEntity con el DTO del usuario actualizado.
+     */
+    @PutMapping("/adminuser/update/{userId}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Integer userId, @RequestBody User userDTO) {
+        log.info("Actualizando usuario con ID: {}", userId);
+        UserDTO response = usersManagementService.updateUser(userId, userDTO);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
 }

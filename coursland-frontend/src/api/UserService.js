@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const UserService = {
-
+    
     BASE_URL: 'https://courslandtfg-production.up.railway.app',
 
     async login(email, password) {
@@ -36,7 +36,7 @@ const UserService = {
     },
 
     async updateUser(userId, userData, token) {
-        const response = await axios.put(`${UserService.BASE_URL}/admin/update/${userId}`, userData, {
+        const response = await axios.put(`${UserService.BASE_URL}/adminuser/update/${userId}`, userData, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return response.data;
