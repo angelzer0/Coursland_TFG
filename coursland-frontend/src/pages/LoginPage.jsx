@@ -16,7 +16,7 @@ const LoginPage = () => {
 
     useEffect(() => {
         if (location.state && location.state.message) {
-            toast.warn(location.state.message, { className: 'toast-warning' });
+            toast.success(location.state.message, { className: 'toast-success' });
             navigate(location.pathname, { replace: true, state: {} });
         }
     }, [location, navigate]);

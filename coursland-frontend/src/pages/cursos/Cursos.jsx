@@ -38,8 +38,9 @@ const Cursos = () => {
   useEffect(() => {
     if (location.state && location.state.message) {
       toast.success(location.state.message);
+      navigate(location.pathname, { replace: true, state: {} });
     }
-  }, [location]);
+  }, [location, navigate]);
 
   const filteredCursos = cursos.filter(curso => {
     if (!searchTerm) {
